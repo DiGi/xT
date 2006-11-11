@@ -1,11 +1,17 @@
 xT Readme
 ---------
-$URL: svn://zombie.kelocnet.cz/sion/dev/sion2system/js/readme.txt $
-$Id: readme.txt 145 2006-06-09 09:05:57Z radar $
+$URL$
+$Id$
 
 xT (xt.js)
 ----------
 Zapouzdøení XMLHttpRequest objektu
+
+v0.93.1 (2006.10.26)
+- drobná oprava - doplnìno return false - ve funkci getXmlReq (hlášeno jako varování ve strict módu)
+
+v0.93 (2006.07.25)
+- drobné opravy (var parametry) - hlášeno jako varování ve strict módech
 
 v0.92 (2006.06.09)
 ! oprava v xT._start_transfer (odstranìno posílání headeru "Connection:Close". V pøípadì GET požadavku se pošle x.send(null) )
@@ -55,6 +61,12 @@ Obsahuje jednoduchou obsluhu pro stažení a provedení JavaScript kódu
 xT.Tree (xttree.js)
 -------------------
 Aktivní zobrazení stromu s možností dynamického dotahování pomocí xT
+
+v0.93 (2006.07.25)
+- drobné opravy (var parametry) - hlášeno jako varování ve strict módech
+
+v0.9 (2006.05.31)
+- spojení jednotlivých tøíd do základní tøídy xT
 
 v0.82 (2006.05.??)
 - drobné úpravy kódu

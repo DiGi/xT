@@ -5,7 +5,7 @@
 * part of SION
 *
 * @author DiGi
-* $Id: xt.js 145 2006-06-09 09:05:57Z radar $
+* $Id$
 **/
 
 var xT = {
@@ -16,7 +16,7 @@ var xT = {
 	OnTransfersComplete: function() {},    // Událost volaná pøi dokonèení všech pøenosù
 	OnError: function(msg) { alert(msg) },  // Obsluha chyb
 	OnTimeout: function(url, data) { xT._error('Chyba: Timeout pri komunikaci') },  // Událost volaná pøi timeoutu dotazu
-	version: '0.92',
+	version: '0.93.1',
 	// @access private
 	_active: 0,
 	_jobs: [],
@@ -40,9 +40,21 @@ var xT = {
 	* @access public
 	**/
 	getXmlReq: function() {
-		if (window.XMLHttpRequest) { try { return new XMLHttpRequest() } catch(e) {return false}
-		} else if (window.ActiveXObject) { try { return new ActiveXObject("Msxml2.XMLHTTP") } catch(e)
-		{ try { return new ActiveXObject("Microsoft.XMLHTTP") } catch(e) {return false} } }
+		if (window.XMLHttpRequest) {
+			try {
+				return new XMLHttpRequest() }
+			catch(e) {
+				return false } }
+		else if (window.ActiveXObject) {
+			try {
+				return new ActiveXObject("Msxml2.XMLHTTP") }
+			catch(e) {
+				try {
+					return new ActiveXObject("Microsoft.XMLHTTP") }
+				catch(e) {
+					return false} } }
+		else
+			return false
 	},
 
 
@@ -176,7 +188,7 @@ xT.Lib = {
 		var o = [], s = elem.childNodes
 		if (s)
 			for(var k = 0; k < s.length; k++)
-				if (s[k].tagName == subTagName)
+				if (s[k].tagName && s[k].tagName == subTagName)
 					o.push(s[k])
 		return o
 	},
@@ -189,7 +201,7 @@ xT.Lib = {
 		var s = elem.childNodes
 		if (s)
 			for(var k = 0; k < s.length; k++)
-				if (s[k].tagName == subTagName)
+				if (s[k].tagName && s[k].tagName == subTagName)
 					return s[k]
 		return 0
 	}

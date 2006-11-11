@@ -4,7 +4,7 @@
 *
 * @author DiGi
 * @see xT, xT.Lib
-* $Id: xtinfo.js 143 2006-05-31 21:12:58Z DiGi $
+* $Id$
 **/
 
 xT.Info = {
