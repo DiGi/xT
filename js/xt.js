@@ -5,7 +5,7 @@
 * part of SION
 *
 * @author DiGi
-* $Id: xt.js 143 2006-05-31 21:12:58Z DiGi $
+* $Id: xt.js 145 2006-06-09 09:05:57Z radar $
 **/
 
 var xT = {
@@ -16,7 +16,7 @@ var xT = {
 	OnTransfersComplete: function() {},    // Událost volaná pøi dokonèení všech pøenosù
 	OnError: function(msg) { alert(msg) },  // Obsluha chyb
 	OnTimeout: function(url, data) { xT._error('Chyba: Timeout pri komunikaci') },  // Událost volaná pøi timeoutu dotazu
-	version: '0.9',
+	version: '0.92',
 	// @access private
 	_active: 0,
 	_jobs: [],
@@ -80,7 +80,7 @@ var xT = {
 	**/
 	_on_timeout: function(c) { with(this) {
 		if (c && c.xmlReq.readyState < 4) {
-			c.xmlReq.abort
+			c.xmlReq.abort()
 			_complete()
 			try { OnTimeout(c.url, c.data) } catch(e) {_error(e, 'Error in OnTimeout event')}
 		}
@@ -131,10 +131,10 @@ var xT = {
 			x.setRequestHeader('Accept', 'text/html, application/xml, text/xml, */*')
 			if (c.method == 'POST') {
 				x.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
-				x.setRequestHeader('Content-Length',d.length);x.setRequestHeader('Connection','close')
+				x.setRequestHeader('Content-Length',d.length);//x.setRequestHeader('Connection','close')
 				// Odeslání POST obsahu
 				x.send(d)
-			} else x.send('')
+			} else x.send(null)
 			// Timeout
 			setTimeout(function() { xT._on_timeout(c) }, timeout * 1000)
 		} catch (e) {_error(e, 'Nepodarilo se navazat spojeni k '+c.url); _complete()}

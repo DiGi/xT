@@ -1,11 +1,17 @@
 xT Readme
 ---------
 $URL: svn://zombie.kelocnet.cz/sion/dev/sion2system/js/readme.txt $
-$Id: readme.txt 143 2006-05-31 21:12:58Z DiGi $
+$Id: readme.txt 145 2006-06-09 09:05:57Z radar $
 
 xT (xt.js)
 ----------
 Zapouzdøení XMLHttpRequest objektu
+
+v0.92 (2006.06.09)
+! oprava v xT._start_transfer (odstranìno posílání headeru "Connection:Close". V pøípadì GET požadavku se pošle x.send(null) )
+
+v0.91 (2006.06.09)
+! oprava v xT._on_timeout (u abort doplnìné () )
 
 v0.9 (2006.05.31)
 - spojení jednotlivých tøíd do základní tøídy xT
