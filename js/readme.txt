@@ -7,6 +7,15 @@ xT (xt.js)
 ----------
 Zapouzdøení XMLHttpRequest objektu
 
+
+v0.95 ještì NENÍ FINÁLNÍ
+------------------------
+
+v0.95 (2006.11.06)
+- pøejmenování metod - sjednocení velikostí písmen v názvech promìnných a metod
+- xT.Lib pøesunuta do Element.prototype a metody byly pøejmenovány
+- nebude funkèní na PocketIE 2003 (používání Element.prototype)
+
 v0.93.1 (2006.10.26)
 - drobná oprava - doplnìno return false - ve funkci getXmlReq (hlášeno jako varování ve strict módu)
 
@@ -48,11 +57,7 @@ v0.6 (2006.05.06)
 - Automatické enkódování pøedaných dat (øetìzec, array nebo objekt) pro odeslání
 
 TODO:
-- ošetøení timeoutù (pøedávaná funkce?)
 - Volitelné/mìnitelné Headery?
-
-xT.Lib
-Obsahuje spoleèné metody používané dalšími objekty (getChildNodes, getChildNode)
 
 xT.Eval
 Obsahuje jednoduchou obsluhu pro stažení a provedení JavaScript kódu
@@ -61,6 +66,9 @@ Obsahuje jednoduchou obsluhu pro stažení a provedení JavaScript kódu
 xT.Tree (xttree.js)
 -------------------
 Aktivní zobrazení stromu s možností dynamického dotahování pomocí xT
+
+v0.95 (2006.11.06)
+- použití funkce $
 
 v0.93 (2006.07.25)
 - drobné opravy (var parametry) - hlášeno jako varování ve strict módech
@@ -91,6 +99,10 @@ xT.Info (xtinfo.js)
 -------------------
 Infoblok s dotahováním pøes xT
 
+v0.95 (2006.11.07)
+- doplnìn druhý parametr v metodì init - obsahuje volitelná uživatelská data, která se pak pøedávají pøes xT
+- použití funkce $
+
 v0.9 (2006.05.31)
 - spojení jednotlivých tøíd do základní tøídy xT
 
@@ -106,6 +118,10 @@ TODO:
 xT.Form (xtinfo.js)
 -------------------
 Obsluha Formù s možností odeslat data pøes xT
+
+v0.95 (2006.11.06)
+- nepojmenované elementy se neodesílají
+- použití funkce $
 
 v0.9 (2006.05.31)
 - spojení jednotlivých tøíd do základní tøídy xT

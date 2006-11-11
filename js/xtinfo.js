@@ -3,12 +3,12 @@
 * part of SION
 *
 * @author DiGi
-* @see xT, xT.Lib
+* @see xT
 * $Id$
 **/
 
 xT.Info = {
-	Method : 'POST',
+	method : 'POST',
 	sourceURL : 'innerdata.php',
 	cssPlus : 'p',
 	cssMinus : 'm',
@@ -17,14 +17,15 @@ xT.Info = {
 	loadingMsg : 'Nahrávám...',
 	BeforeSendData : function (d) { return d },
 	ProceedData : function(r, d, dv, x) { dv.innerHTML = x.responseText; return true },
-	version: '0.9',
+	version : '0.95',
 
-	init : function(en) { with(this) {
-		var r = document.getElementById(en)
+	init : function(elementName, customData) { with(this) {
+		var r = typeof elementName == 'string' ? $(elementName) : elementName
 		if (r) {
-			var l = xT.Lib.getFirstNode(r,'LEGEND')
-			var d = xT.Lib.getFirstNode(r,'DIV')
-			l.onclick = function(e) { xT.Info._click(l, d, sourceURL); return false }
+			var l = r.firstChildByTag('LEGEND'), d = r.firstChildByTag('DIV')
+			var data = customData == undefined ? {} : customData
+			data['_id'] = r.id
+			l.onclick = function(e) { xT.Info._click(l, d, sourceURL, data); return false }
 			d.loaded = d.innerHTML.length > 0 ? 2 : 0
 			_change_state(d.loaded, l, d)
 		}
@@ -35,21 +36,21 @@ xT.Info = {
 			d.style.display = s ? 'block' : 'none'
 	}},
 
-	_click : function(l, d, u) { with(this) {
+	_click : function(l, d, u, data) { with(this) {
 		var s = l.className == cssPlus
 		if (s && d.loaded < 1) {
 			d.loaded = 1
 			d.innerHTML = loadingMsg
 			d.className = cssLoading
-			xT.request(Method, u, BeforeSendData({ _id : l.parentNode.id }), xT.Info._loaded)
+			xT.request(method, u, BeforeSendData(data), xT.Info._loaded)
 		}
 		_change_state(s, l, d)
 	}},
 
 	_loaded : function(d,x) {
-		var r = document.getElementById(d._id)
+		var r = $(d._id)
 		if (r) {
-			var dv = xT.Lib.getFirstNode(r,'DIV')
+			var dv = r.firstChildByTag('DIV')
 			if (xT.Info.ProceedData(r, d, dv, x)) {
 				dv.loaded = 2
 				dv.className = xT.Info.cssLoaded
