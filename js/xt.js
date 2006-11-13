@@ -75,11 +75,11 @@ var xT = {
 	* Konverze dat (object nebo array) na klic=hodnota&klic2=hodnota2... formát
 	* @access public
 	**/
-	dataToURI : function(d) {
-		var o = []
-		for (var k in d)
-			o.push(k + '=' + encodeURIComponent(d[k]))
-		return o.join('&')
+	dataToURI : function(data) {
+		var out = []
+		for (var key in data)
+			out.push(key + '=' + encodeURIComponent(data[key]))
+		return out.join('&')
 	},
 
 
@@ -92,7 +92,7 @@ var xT = {
 		if (x.readyState == 4) {
 			_complete()
 			if (x.status < 400)
-				try { dataObj.OnComplete(dataObj.data, x) } catch(e) {_error(e, 'Error in OnComplete event')}
+				try { dataObj.OnComplete(dataObj.data, x) } catch(e) { _error(e, 'Error in OnComplete event') }
 			else
 				_error("Problem pri prenaseni dat:\nChyba "+x.status+': '+x.statusText)
 		}
@@ -107,7 +107,7 @@ var xT = {
 		if (dataObj && dataObj.xmlReq.readyState < 4) {
 			dataObj.xmlReq.abort()
 			_complete()
-			try { OnTimeout(dataObj.url, dataObj.data) } catch(e) {_error(e, 'Error in OnTimeout event')}
+			try { OnTimeout(dataObj.url, dataObj.data) } catch(e) { _error(e, 'Error in OnTimeout event') }
 		}
 	}},
 
@@ -119,7 +119,7 @@ var xT = {
 	_do_next : function() { with(this) {
 		if (_active < maxActive && _jobs.length > 0) {
 			if (_active == 0)
-				try {OnStartTransfers()} catch(e) {_error(e, 'Error in OnStartTransfers event')}
+				try { OnStartTransfers() } catch(e) { _error(e, 'Error in OnStartTransfers event') }
 			_active++; _start_transfer(); _do_next()
 		}
 	}},
@@ -134,7 +134,7 @@ var xT = {
 		if (_jobs.length > 0)
 			_do_next()
 		else if (_active == 0)
-			try {OnTransfersComplete()} catch(e) {_error(e, 'Error in OnTransfersComplete event')}
+			try { OnTransfersComplete() } catch(e) { _error(e, 'Error in OnTransfersComplete event') }
 	}},
 
 
@@ -172,12 +172,13 @@ var xT = {
 	* Metoda na volání obsluhy chyb
 	* @access private
 	**/
-	_error : function(e, m) {
-		if (m == undefined)
-			var msg = e
+	_error : function(exception, message) {
+		if (message == undefined)
+			var msg = exception
 		else
-			var emsg = e.description ? e.description : e, msg = m + ':\nChyba: ' + emsg
-		try { this.OnError(msg) } catch(e) {alert('Error in OnError event')}
+			var emsg = exception.description ? exception.description : exception
+			var msg = message + ':\nChyba: ' + emsg
+		try { this.OnError(msg) } catch(e) { alert('Error in OnError event') }
 	},
 
 	/**
@@ -190,13 +191,14 @@ var xT = {
 
 } // xT
 
+// detekce XML objektu
 var test_xT = xT.getXmlReq()
 if (test_xT) { xT.enabled = true; delete(test_xT) }
 
 xT.Eval = {
 	method : 'POST',
 	sourceURL : 'job.php',
-	BeforeSendData : function (d) { return d },
+	BeforeSendData : function (data) { return data },
 
 	/**
 	* Vytvoøení dotazu s následným provedením stažených dat
@@ -215,7 +217,7 @@ xT.Eval = {
 	* @access protected
 	**/
 	evalResponse : function (d,x) {
-		try { eval(x.responseText) } catch(e) {xT._error(e, 'Error in requested JavaScript code')}
+		try { eval(x.responseText) } catch(e) { xT._error(e, 'Error in requested JavaScript code') }
 	}
 
 } // xT.Eval
@@ -230,7 +232,8 @@ Element.prototype.childsByTag = function(tagName) {
 		for(var k = 0; k < s.length; k++)
 			if (s[k].tagName && s[k].tagName == tag)
 				o.push(s[k])
-	return o }
+	return o
+}
 
 /**
 * Vrátí prvního nalezeného potomka podle typu
@@ -242,4 +245,5 @@ Element.prototype.firstChildByTag = function(tagName) {
 		for(var k = 0; k < s.length; k++)
 			if (s[k].tagName && s[k].tagName == tag )
 				return s[k]
-	return null }
+	return null
+}
