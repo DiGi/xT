@@ -128,7 +128,3 @@ xT.Form = {
 	} // xT.Form.Items
 
 } // xT.Form
-
-// prototype pro formuláøe
-Element.prototype.disableAll = function() { xT.Form.disable(this) }
-Element.prototype.enableAll = function() { xT.Form.enable(this) }

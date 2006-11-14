@@ -22,7 +22,7 @@ xT.Info = {
 	init : function(elementName, customData) { with(this) {
 		var r = typeof elementName == 'string' ? $(elementName) : elementName
 		if (r) {
-			var l = r.firstChildByTag('LEGEND'), d = r.firstChildByTag('DIV')
+			var l = xT.Lib.firstChildByTag(r, 'LEGEND'), d = xT.Lib.firstChildByTag(r, 'DIV')
 			var data = customData == undefined ? {} : customData
 			data['_id'] = r.id
 			l.onclick = function(e) { xT.Info._click(l, d, sourceURL, data); return false }
@@ -50,7 +50,7 @@ xT.Info = {
 	_loaded : function(d,x) {
 		var r = $(d._id)
 		if (r) {
-			var dv = r.firstChildByTag('DIV')
+			var dv = xT.Lib.firstChildByTag(r, 'DIV')
 			if (xT.Info.ProceedData(r, d, dv, x)) {
 				dv.loaded = 2
 				dv.className = xT.Info.cssLoaded

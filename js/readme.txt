@@ -13,8 +13,6 @@ v0.95 ještì NENÍ FINÁLNÍ
 
 v0.95 (2006.11.06)
 - pøejmenování metod - sjednocení velikostí písmen v názvech promìnných a metod
-- xT.Lib pøesunuta do Element.prototype a metody byly pøejmenovány
-- nebude funkèní na PocketIE 2003 (používání Element.prototype)
 
 v0.93.1 (2006.10.26)
 - drobná oprava - doplnìno return false - ve funkci getXmlReq (hlášeno jako varování ve strict módu)
@@ -58,6 +56,9 @@ v0.6 (2006.05.06)
 
 TODO:
 - Volitelné/mìnitelné Headery?
+
+xT.Lib
+Obsahuje spoleèné metody používané dalšími objekty (getChildNodes, getChildNode)
 
 xT.Eval
 Obsahuje jednoduchou obsluhu pro stažení a provedení JavaScript kódu

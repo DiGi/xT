@@ -209,7 +209,7 @@ xT.Eval = {
 			var u = sourceURL, d = url
 		else
 			var u = url, d = data
-		xT.request(Method, u, BeforeSendData(d), xT.Eval.evalResponse)
+		xT.request(method, u, BeforeSendData(d), xT.Eval.evalResponse)
 	}},
 
 	/**
@@ -222,28 +222,32 @@ xT.Eval = {
 
 } // xT.Eval
 
-/**
-* Vrátí seznam skuteèných potomkù podle jejich typu
-* @access public
-**/
-Element.prototype.childsByTag = function(tagName) {
-	var o = [], s = this.childNodes, tag = tagName.toUpperCase()
-	if (s)
-		for(var k = 0; k < s.length; k++)
-			if (s[k].tagName && s[k].tagName == tag)
-				o.push(s[k])
-	return o
-}
 
-/**
-* Vrátí prvního nalezeného potomka podle typu
-* @access public
-**/
-Element.prototype.firstChildByTag = function(tagName) {
-	var s = this.childNodes, tag = tagName.toUpperCase()
-	if (s)
-		for(var k = 0; k < s.length; k++)
-			if (s[k].tagName && s[k].tagName == tag )
-				return s[k]
-	return null
-}
+xT.Lib = {
+	/**
+	* Vrátí seznam skuteèných potomkù podle jejich typu
+	* @access public
+	**/
+	childsByTag : function(element, tagName) {
+		var o = [], s = element.childNodes, tag = tagName.toUpperCase()
+		if (s)
+			for(var k = 0; k < s.length; k++)
+				if (s[k].tagName && s[k].tagName == tag)
+					o.push(s[k])
+		return o
+	},
+
+	/**
+	* Vrátí prvního nalezeného potomka podle typu
+	* @access public
+	**/
+	firstChildByTag : function(element, tagName) {
+		var s = element.childNodes, tag = tagName.toUpperCase()
+		if (s)
+			for(var k = 0; k < s.length; k++)
+				if (s[k].tagName && s[k].tagName == tag )
+					return s[k]
+		return null
+	}
+	
+} // xT.Lib

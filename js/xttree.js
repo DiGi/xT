@@ -57,7 +57,7 @@ xT.Tree = {
 			var elm = $('show-' + d._id)
 			elm.className = elm.className.replace('plus', 'minus')
 			elm.innerHTML += x.responseText
-			var tree = elm.firstChildByTag('UL')
+			var tree = xT.Lib.firstChildByTag(elm, 'UL')
 			xT.Tree._prepareUL(tree, this.xTAutoInitxTSubItems)
 		}
 	},
@@ -67,13 +67,13 @@ xT.Tree = {
 	* @access private
 	**/
 	_prepareUL : function(ul, prepareSub) {
-		var nodes = ul.childsByTag('LI')
+		var nodes = xT.Lib.childsByTag(ul, 'LI')
 		var lastnode = nodes.length - 1
 		for (var i = 0; i <= lastnode; i++) {
 			if (nodes[i].id.match(/^show-/)) {
 				var prepareThisSub = prepareSub || nodes[i].className == 'minus'
 				var last = i == lastnode ? '-last' : ''
-				var ulSubNode = nodes[i].firstChildByTag('UL')
+				var ulSubNode = xT.Lib.firstChildByTag(nodes[i], 'UL')
 				var state = prepareThisSub && ulSubNode ? 'minus' : 'plus'
 				nodes[i].className = state + last
 				if (ulSubNode) {
