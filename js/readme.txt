@@ -8,10 +8,14 @@ xT (xt.js)
 Zapouzdøení XMLHttpRequest objektu
 
 
-v0.95 ještì NENÍ FINÁLNÍ
+v0.95
 ------------------------
 
-v0.95 (2006.11.06)
+v0.95 (2006.11.16)
+- xT.Eval odebráno, pøidána pøímá podpora do xT.request (pøi volání bez obslužné události budou pøijatá data evalována)
+  a možnost vynutit evalovaní nastavením content-type na text|application/javascript|js|eval
+
+v0.95.b1 (2006.11.06)
 - pøejmenování metod - sjednocení velikostí písmen v názvech promìnných a metod
 
 v0.93.1 (2006.10.26)
@@ -58,11 +62,7 @@ TODO:
 - Volitelné/mìnitelné Headery?
 
 xT.Lib
-Obsahuje spoleèné metody používané dalšími objekty (getChildNodes, getChildNode)
-
-xT.Eval
-Obsahuje jednoduchou obsluhu pro stažení a provedení JavaScript kódu
-
+Obsahuje spoleèné metody používané dalšími objekty (childsByTag, firstChildByTag)
 
 xT.Tree (xttree.js)
 -------------------

@@ -41,7 +41,8 @@ var xT = {
 	**/
 	request : function(method, url, data, OnCompleteEvent) { with(this) {
 		if (enabled) {
-			_jobs.push({ method: method.toUpperCase(), url: url, data: data, OnComplete: OnCompleteEvent, xmlReq: null })
+			var onComplete = OnCompleteEvent == undefined ? evalResponse : OnCompleteEvent
+			_jobs.push({ method: method.toUpperCase(), url: url, data: data, OnComplete: onComplete, xmlReq: null })
 			_do_next()
 		} else
 			_error('XMLHttpRequest is missing.')
@@ -53,19 +54,19 @@ var xT = {
 	* @access public
 	**/
 	getXmlReq : function() {
-		if (window.XMLHttpRequest) {
+		if (window.XMLHttpRequest)
 			try {
 				return new XMLHttpRequest() }
 			catch(e) {
-				return false } }
-		else if (window.ActiveXObject) {
+				return false }
+		else if (window.ActiveXObject)
 			try {
 				return new ActiveXObject("Msxml2.XMLHTTP") }
 			catch(e) {
 				try {
 					return new ActiveXObject("Microsoft.XMLHTTP") }
 				catch(e) {
-					return false} } }
+					return false} }
 		else
 			return false
 	},
@@ -84,6 +85,24 @@ var xT = {
 
 
 	/**
+	* Obsluha JS kódu
+	* @access protected
+	**/
+	evalResponse : function (d,x) {
+		try { eval(x.responseText) } catch(e) { this._error(e, 'Error in requested JavaScript code') }
+	},
+
+
+	/**
+	* Textové zobrazení stavu objektu
+	* @access public
+	**/
+	toString : function() { with(this) {
+		return 'xT v' + version + ', ' + _active + ' active jobs, '  + _jobs.length + ' in queue'
+	}},
+
+
+	/**
 	* Událost volaná z XMLHttpRequest objektu, zpracování informací o prùbìhu stahování
 	* @access protected
 	**/
@@ -92,7 +111,10 @@ var xT = {
 		if (x.readyState == 4) {
 			_complete()
 			if (x.status < 400)
-				try { dataObj.OnComplete(dataObj.data, x) } catch(e) { _error(e, 'Error in OnComplete event') }
+				if (x.getResponseHeader('Content-Type').match(/^\s*(text|application)\/(javascript|js|eval)(.*)?\s*$/i))
+					evalResponse(dataObj.data, x)
+				else
+					try { dataObj.OnComplete(dataObj.data, x) } catch(e) { _error(e, 'Error in OnComplete event') }
 			else
 				_error("Problem pri prenaseni dat:\nChyba "+x.status+': '+x.statusText)
 		}
@@ -179,49 +201,13 @@ var xT = {
 			var emsg = exception.description ? exception.description : exception
 			var msg = message + ':\nChyba: ' + emsg
 		try { this.OnError(msg) } catch(e) { alert('Error in OnError event') }
-	},
-
-	/**
-	* Textové zobrazení stavu objektu
-	* @access public
-	**/
-	toString : function() { with(this) {
-		return 'xT v' + version + ', ' + _active + ' active jobs, '  + _jobs.length + ' in queue'
-	}}
+	}
 
 } // xT
 
 // detekce XML objektu
 var test_xT = xT.getXmlReq()
 if (test_xT) { xT.enabled = true; delete(test_xT) }
-
-xT.Eval = {
-	method : 'POST',
-	sourceURL : 'job.php',
-	BeforeSendData : function (data) { return data },
-
-	/**
-	* Vytvoøení dotazu s následným provedením stažených dat
-	* @access public
-	**/
-	request : function(url, data) { with(xT.Eval) {
-		if (data == undefined)
-			var u = sourceURL, d = url
-		else
-			var u = url, d = data
-		xT.request(method, u, BeforeSendData(d), xT.Eval.evalResponse)
-	}},
-
-	/**
-	* Obsluha JS kódu
-	* @access protected
-	**/
-	evalResponse : function (d,x) {
-		try { eval(x.responseText) } catch(e) { xT._error(e, 'Error in requested JavaScript code') }
-	}
-
-} // xT.Eval
-
 
 xT.Lib = {
 	/**
@@ -249,5 +235,5 @@ xT.Lib = {
 					return s[k]
 		return null
 	}
-	
+
 } // xT.Lib
