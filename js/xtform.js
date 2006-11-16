@@ -27,7 +27,7 @@ xT.Form = {
 	* @access public
 	**/
 	sendAndEval : function(url, formName) { with(this) {
-		xT.request(method, url, BeforeSendData(formToObject(formName)), xT.Eval.evalResponse)
+		xT.request(method, url, BeforeSendData(formToObject(formName)))
 	}},
 
 
@@ -124,7 +124,7 @@ xT.Form = {
 				if (opt.selected)
 					o.push(opt.value || opt.text) }
 			return [e.name, o.join(',')] }
-			
+
 	} // xT.Form.Items
 
 } // xT.Form

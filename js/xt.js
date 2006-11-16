@@ -41,8 +41,7 @@ var xT = {
 	**/
 	request : function(method, url, data, OnCompleteEvent) { with(this) {
 		if (enabled) {
-			var onComplete = OnCompleteEvent == undefined ? evalResponse : OnCompleteEvent
-			_jobs.push({ method: method.toUpperCase(), url: url, data: data, OnComplete: onComplete, xmlReq: null })
+			_jobs.push({ method: method.toUpperCase(), url: url, data: data, OnComplete: OnCompleteEvent || evalResponse, xmlReq: null })
 			_do_next()
 		} else
 			_error('XMLHttpRequest is missing.')
@@ -195,11 +194,7 @@ var xT = {
 	* @access private
 	**/
 	_error : function(exception, message) {
-		if (message == undefined)
-			var msg = exception
-		else
-			var emsg = exception.description ? exception.description : exception
-			var msg = message + ':\nChyba: ' + emsg
+		var msg = message == undefined ? exception : message + ':\nChyba: ' + (exception.description || exception)
 		try { this.OnError(msg) } catch(e) { alert('Error in OnError event') }
 	}
 
