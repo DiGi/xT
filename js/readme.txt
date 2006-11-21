@@ -68,6 +68,11 @@ xT.Tree (xttree.js)
 -------------------
 Aktivní zobrazení stromu s možností dynamického dotahování pomocí xT
 
+v0.96 (2006.11.21)
+- vlastnost xTAutoInitRootSubItems pøesunuto do parametru xT.Tree.init() jako [autoExpandElements = true]
+- vlastnost xTAutoInitxTSubItems pøejmenována na expandElements
+- nová událost GetDataURL(id) - pro získávání statických URL
+
 v0.95 (2006.11.06)
 - použití funkce $
 
