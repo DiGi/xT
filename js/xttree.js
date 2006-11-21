@@ -9,21 +9,23 @@
 
 xT.Tree = {
 	method : 'POST',
-	xTAutoInitRootSubItems : true,
-	xTAutoInitxTSubItems : false,
-	// Událost volaná pøed zaèátkem pøenosu. V ní je možné do objektu doplnit další parametry pøedané volané stránce
-	BeforeSendData : function (d) { return d },
-	version : '0.95',
+	expandElements : false,
+	BeforeSendData : function (d) { return d }, // Událost volaná pøed zaèátkem pøenosu. V ní je možné do objektu doplnit další parametry pøedané volané stránce
+	GetDataURL : null, // Funkce, volaná pøi získání "dataURL" - používané pro statické GET stránky. Pøíklad: xT.Tree.GetDataURL = function(id) { return 'treecache/' + id + '.html' }
+	version : '0.96',
 
 	/**
 	* Init stromu, nastavení události a volání _prepareUL (nastavení [+] [-] ikon)
 	* @access public
+	* @param string rootElement jméno hlavního <ul>
+	* @param string url URL, které se má øíkat o data
+	* @param boolean autoExpandElements automaticky rozbalit všechny naplnìné elementy
 	**/
-	init : function(rootElement, url) { with(this) {
+	init : function(rootElement, url, autoExpandElements) { with(this) {
 		var t = typeof rootElement == 'string' ? $(rootElement) : rootElement
 		if (t) {
 			t.onclick = function(e) { xT.Tree._click(e, url) }
-			_prepareUL(t, xTAutoInitRootSubItems)
+			_prepareUL(t, autoExpandElements ? autoExpandElements : true)
 		}
 	}},
 
@@ -42,7 +44,11 @@ xT.Tree = {
 				targ.style.display = col ? 'block' : 'none'
 			} else {
 				var col = true
-				xT.request(method, url, BeforeSendData({ _id: RegExp.$1 }), xT.Tree._loaded)
+				if (GetDataURL)
+					var u = GetDataURL(RegExp.$1), d = {}
+				else
+					var u = url, d = { _id: RegExp.$1 }
+				xT.request(method, u, BeforeSendData(d), xT.Tree._loaded)
 			}
 			elm.className = elm.className.replace(col ? 'plus' : 'minus', col ? 'minus' : 'plus')
 		}
@@ -58,7 +64,7 @@ xT.Tree = {
 			elm.className = elm.className.replace('plus', 'minus')
 			elm.innerHTML += x.responseText
 			var tree = xT.Lib.firstChildByTag(elm, 'UL')
-			xT.Tree._prepareUL(tree, this.xTAutoInitxTSubItems)
+			xT.Tree._prepareUL(tree, this.expandElements)
 		}
 	},
 
