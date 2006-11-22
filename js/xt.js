@@ -29,7 +29,7 @@ var xT = {
 	OnTransfersComplete : function() {},    // Událost volaná pøi dokonèení všech pøenosù
 	OnError : function(msg) { alert(msg) },  // Obsluha chyb
 	OnTimeout : function(url, data) { xT._error('Chyba : Timeout pri komunikaci') }, // Událost volaná pøi timeoutu dotazu
-	version : '0.95',
+	version : '0.96',
 	// @access private
 	_active : 0,
 	_jobs : [],
@@ -172,10 +172,11 @@ var xT = {
 			// Obsluha událostí
 			x.onreadystatechange = function() { xT._proceed(c) }
 			// Samotné otevøení dotazu, odeslání hlavièek
-			x.open(c.method, u, true)
+			var m = c.method.match(/(GET|POST)/), m = m ? m[0] : 'GET'
+			x.open(m, u, true)
 			x.setRequestHeader('X-Requested-With','xT v' + version)
 			x.setRequestHeader('Accept', 'text/html, application/xml, text/xml, */*')
-			if (c.method == 'POST') {
+			if (m == 'POST') {
 				x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 				x.setRequestHeader('Content-Length', d.length)
 				// Odeslání POST obsahu

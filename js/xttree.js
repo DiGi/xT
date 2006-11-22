@@ -8,10 +8,10 @@
 **/
 
 xT.Tree = {
-	method : 'POST',
+	method : 'POST', // POST, GET, pøi použitém OnGetDataURL i EMPTY-GET
 	expandElements : false,
 	BeforeSendData : function (d) { return d }, // Událost volaná pøed zaèátkem pøenosu. V ní je možné do objektu doplnit další parametry pøedané volané stránce
-	GetDataURL : null, // Funkce, volaná pøi získání "dataURL" - používané pro statické GET stránky. Pøíklad: xT.Tree.GetDataURL = function(id) { return 'treecache/' + id + '.html' }
+	OnGetDataURL : null, // Funkce, volaná pøi získání "dataURL" - používané pro statické GET stránky. Pøíklad: xT.Tree.OnGetDataURL = function(id) { return 'treecache/' + id + '.html' }
 	version : '0.96',
 
 	/**
@@ -43,12 +43,8 @@ xT.Tree = {
 				var col = targ.style.display == 'none'
 				targ.style.display = col ? 'block' : 'none'
 			} else {
-				var col = true
-				if (GetDataURL)
-					var u = GetDataURL(RegExp.$1), d = {}
-				else
-					var u = url, d = { _id: RegExp.$1 }
-				xT.request(method, u, BeforeSendData(d), xT.Tree._loaded)
+				var col = true, u = OnGetDataURL ? OnGetDataURL(RegExp.$1) : url
+				xT.request(method, u, BeforeSendData({ _id: RegExp.$1 }), xT.Tree._loaded)
 			}
 			elm.className = elm.className.replace(col ? 'plus' : 'minus', col ? 'minus' : 'plus')
 		}
