@@ -34,16 +34,16 @@ xT.Tree = {
 	* @access protected
 	**/
 	_click : function(e, url) { with(this) {
-		var ev = e || window.event, elm = ev.srcElement || ev.target
+		var ev = e || window.event, elm = ev.srcElement || ev.target, col = true
 		if (elm.id && elm.id.match(/^show-(.*)/)) {
 			var targ = $('tree-' + RegExp.$1)
 			if (targ && targ.style) {
 				if (!targ.prepared)
 					_prepareUL(targ)
-				var col = targ.style.display == 'none'
+				col = targ.style.display == 'none'
 				targ.style.display = col ? 'block' : 'none'
 			} else {
-				var col = true, u = OnGetDataURL ? OnGetDataURL(RegExp.$1) : url
+				var u = OnGetDataURL ? OnGetDataURL(RegExp.$1) : url
 				xT.request(method, u, BeforeSendData({ _id: RegExp.$1 }), xT.Tree._loaded)
 			}
 			elm.className = elm.className.replace(col ? 'plus' : 'minus', col ? 'minus' : 'plus')
