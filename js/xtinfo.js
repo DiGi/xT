@@ -17,7 +17,7 @@ xT.Info = {
 	loadingMsg : 'Nahrávám...',
 	BeforeSendData : function (d) { return d },
 	ProceedData : function(r, d, dv, x) { dv.innerHTML = x.responseText; return true },
-	version : '0.95',
+	version : '$Revision$',
 
 	init : function(elementName, customData) { with(this) {
 		var r = typeof elementName == 'string' ? $(elementName) : elementName

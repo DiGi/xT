@@ -12,7 +12,7 @@ xT.Tree = {
 	expandElements : false,
 	BeforeSendData : function (d) { return d }, // Událost volaná pøed zaèátkem pøenosu. V ní je možné do objektu doplnit další parametry pøedané volané stránce
 	OnGetDataURL : null, // Funkce, volaná pøi získání "dataURL" - používané pro statické GET stránky. Pøíklad: xT.Tree.OnGetDataURL = function(id) { return 'treecache/' + id + '.html' }
-	version : '0.96',
+	version : '$Revision$',
 
 	/**
 	* Init stromu, nastavení události a volání _prepareUL (nastavení [+] [-] ikon)

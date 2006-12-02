@@ -11,7 +11,7 @@ xT.Form = {
 	method : 'POST',
 	BeforeSendData : function (d) { return d },
 	OnTransferComplete : function (d,x) { alert('Data byla odeslana') },
-	version : '0.95',
+	version : '$Revision$',
 
 	/**
 	* Odešle pøes xT data na zadanou adresu

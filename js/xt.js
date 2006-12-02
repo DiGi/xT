@@ -29,7 +29,7 @@ var xT = {
 	OnTransfersComplete : function() {},    // Událost volaná pøi dokonèení všech pøenosù
 	OnError : function(msg) { alert(msg) },  // Obsluha chyb
 	OnTimeout : function(url, data) { xT._error('Chyba : Timeout pri komunikaci') }, // Událost volaná pøi timeoutu dotazu
-	version : '0.96',
+	version : '$Revision$',
 	// @access private
 	_active : 0,
 	_jobs : [],
@@ -203,7 +203,9 @@ var xT = {
 
 // detekce XML objektu
 var test_xT = xT.getXmlReq()
-if (test_xT) { xT.enabled = true; delete(test_xT) }
+if (test_xT) {
+	xT.enabled = true
+	delete(test_xT) }
 
 xT.Lib = {
 	/**

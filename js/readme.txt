@@ -7,9 +7,8 @@ xT (xt.js)
 ----------
 Zapouzdøení XMLHttpRequest objektu
 
-
-v0.95
-------------------------
+v0.96 (2006.12.02)
+- veøejná verze
 
 v0.95 (2006.11.16)
 - xT.Eval odebráno, pøidána pøímá podpora do xT.request (pøi volání bez obslužné události budou pøijatá data evalována)
@@ -68,6 +67,9 @@ xT.Tree (xttree.js)
 -------------------
 Aktivní zobrazení stromu s možností dynamického dotahování pomocí xT
 
+v0.96 public (2006.12.02)
+- Malá oprava pro dojo compressor
+
 v0.96 (2006.11.21)
 - vlastnost xTAutoInitRootSubItems pøesunuto do parametru xT.Tree.init() jako [autoExpandElements = true]
 - vlastnost xTAutoInitxTSubItems pøejmenována na expandElements
@@ -116,10 +118,6 @@ v0.12 (2006.05.??)
 - sync na 0.?2
 
 v0.1 (2006.05.19 - beta)
-
-TODO:
-- ošetøení timeoutù?
-
 
 xT.Form (xtinfo.js)
 -------------------
