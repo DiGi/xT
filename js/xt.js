@@ -45,6 +45,7 @@ var xT = {
 			_do_next()
 		} else
 			_error('XMLHttpRequest is missing.')
+		return enabled
 	}},
 
 
@@ -88,7 +89,7 @@ var xT = {
 	* @access protected
 	**/
 	evalResponse : function (d,x) {
-		try { eval(x.responseText) } catch(e) { this._error(e, 'Error in requested JavaScript code') }
+		try { eval(x.responseText) } catch(e) { xT._error(e, 'Error in requested JavaScript code') }
 	},
 
 
@@ -202,10 +203,7 @@ var xT = {
 } // xT
 
 // detekce XML objektu
-var test_xT = xT.getXmlReq()
-if (test_xT) {
-	xT.enabled = true
-	delete(test_xT) }
+xT.enabled = xT.getXmlReq() != false
 
 xT.Lib = {
 	/**
