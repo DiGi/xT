@@ -14,7 +14,7 @@
 *
 **/
 function $(id) {
-	return document.getElementById(id) }
+	return document.getElementById(id); }
 
 
 /**
@@ -27,8 +27,8 @@ var xT = {
 	timeout : 8,      // Timeout dotazu (sec)
 	OnStartTransfers : function() {},       // Událost volaná pøi zaèátku pøenosu
 	OnTransfersComplete : function() {},    // Událost volaná pøi dokonèení všech pøenosù
-	OnError : function(msg) { alert(msg) },  // Obsluha chyb
-	OnTimeout : function(url, data) { xT._error('Chyba : Timeout pri komunikaci') }, // Událost volaná pøi timeoutu dotazu
+	OnError : function(msg) { alert(msg); }, // Obsluha chyb
+	OnTimeout : function(url, data) { xT._error('Chyba : Timeout pri komunikaci'); }, // Událost volaná pøi timeoutu dotazu
 	version : '$Revision$',
 	// @access private
 	_active : 0,
@@ -37,7 +37,12 @@ var xT = {
 
 	/**
 	* Hlavní metoda pøidávající úkoly do fronty a spouštìní stahování
-	* @access public
+	* 
+	* @param {string} method Zpùsob odeslání požadavku (POST, GET, ...)
+	* @param {string} url Adresa
+	* @param {Object} data
+	* @param {event} OnCompleteEvent
+	* @retun {boolean} Požadavek byl úspìšnì pøidán do fronty ke zpracování
 	**/
 	request : function(method, url, data, OnCompleteEvent) { with(this) {
 		if (enabled) {
@@ -51,7 +56,8 @@ var xT = {
 
 	/**
 	* Získání XMLHttpRequest objektu
-	* @access public
+	* 
+	* @return {object} Získaný XMLHttpRequest nebo false
 	**/
 	getXmlReq : function() {
 		if (window.XMLHttpRequest)
@@ -68,13 +74,15 @@ var xT = {
 				catch(e) {
 					return false} }
 		else
-			return false
+		return false
 	},
 
 
 	/**
-	* Konverze dat (object nebo array) na klic=hodnota&klic2=hodnota2... formát
-	* @access public
+	* Konverze dat (object nebo array) na klic=hodnota&klic2=hodnota2... formát. Pouze jedna úroveò.
+	*
+	* @param {Object} data Data k pøevedení
+	* @return {string} Zakódované data
 	**/
 	dataToURI : function(data) {
 		var out = []
@@ -86,16 +94,29 @@ var xT = {
 
 	/**
 	* Obsluha JS kódu
-	* @access protected
+	*
+	* @param {Object} d Pùvodní odeslaná data
+	* @param {Object} x Vrácený XML objekt
 	**/
 	evalResponse : function (d,x) {
-		try { eval(x.responseText) } catch(e) { xT._error(e, 'Error in requested JavaScript code') }
+		return this._evalJS(x.responseText);
+	},
+
+	
+	/**
+	* Bezpeèné provádìní JS kódu
+	* 
+	* @param {string} js JavaScript kód k provedení
+	* @return Vrácený výsledek z JS kódu
+	**/
+	_evalJS : function(js) {
+		try { return eval(js) } catch(e) { xT._error(e, 'Error in requested JavaScript code') }
 	},
 
 
 	/**
 	* Textové zobrazení stavu objektu
-	* @access public
+	*
 	**/
 	toString : function() { with(this) {
 		return 'xT v' + version + ', ' + _active + ' active jobs, '  + _jobs.length + ' in queue'
@@ -104,26 +125,27 @@ var xT = {
 
 	/**
 	* Událost volaná z XMLHttpRequest objektu, zpracování informací o prùbìhu stahování
-	* @access protected
+	*
 	**/
 	_proceed : function(dataObj) { with(this) {
 		var x = dataObj.xmlReq
 		if (x.readyState == 4) {
 			_complete()
 			if (x.status < 400)
-				if (x.getResponseHeader('Content-Type').match(/^\s*(text|application)\/(javascript|js|eval)(.*)?\s*$/i))
-					evalResponse(dataObj.data, x)
-				else
-					try { dataObj.OnComplete(dataObj.data, x) } catch(e) { _error(e, 'Error in OnComplete event') }
+				if (x.getResponseHeader('Content-Type').match(/^\s*(text|application)\/(javascript|js$|js;|eval)(.*)?\s*$/i))
+					_evalJS(x.responseText)
+				else {
+					x.responseJSON = x.getResponseHeader('Content-Type').match(/^\s*(text|data|application)\/json(.*)?\s*$/i) ? _evalJS('(' + x.responseText + ')') : '';
+					try { dataObj.OnComplete(dataObj.data, x) } catch(e) { _error(e, 'Error in OnComplete event') } }
 			else
-				_error("Problem pri prenaseni dat:\nChyba "+x.status+': '+x.statusText)
+				_error("Problem pri prenaseni dat:\nChyba " + x.status + ': ' + x.statusText)
 		}
 	}},
 
 
 	/**
 	* Obsluha timeout události
-	* @access protected
+	*
 	**/
 	_on_timeout : function(dataObj) { with(this) {
 		if (dataObj && dataObj.xmlReq.readyState < 4) {
@@ -136,7 +158,7 @@ var xT = {
 
 	/**
 	* Správa pøenosù - zaène nový pøenos (i více pokud jsou volné sloty) a posílá upozornìní
-	* @access private
+	*
 	**/
 	_do_next : function() { with(this) {
 		if (_active < maxActive && _jobs.length > 0) {
@@ -149,7 +171,7 @@ var xT = {
 
 	/**
 	* Obsluha "dokonèení pøenosu". Zaèít další pøenos nebo poslat upozornìní pøi dokonèení všech
-	* @access private
+	* 
 	**/
 	_complete : function() { with(this) {
 		_active--
@@ -162,7 +184,7 @@ var xT = {
 
 	/**
 	* Zaène provádìt jeden XMLHttp pøenos ze seznamu úkolù
-	* @access private
+	* 
 	**/
 	_start_transfer : function() { with(this) {
 		var c = _jobs.shift(), x = c.xmlReq = getXmlReq()
@@ -193,7 +215,7 @@ var xT = {
 
 	/**
 	* Metoda na volání obsluhy chyb
-	* @access private
+	* 
 	**/
 	_error : function(exception, message) {
 		var msg = message == undefined ? exception : message + ':\nChyba: ' + (exception.description || exception)
