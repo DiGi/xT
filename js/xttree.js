@@ -25,7 +25,7 @@ xT.Tree = {
 		var t = typeof rootElement == 'string' ? $(rootElement) : rootElement
 		if (t) {
 			t.onclick = function(e) { xT.Tree._click(e, url) }
-			_prepareUL(t, autoExpandElements ? autoExpandElements : true)
+			_prepareUL(t, autoExpandElements == undefined ? true : autoExpandElements)
 		}
 	}},
 
