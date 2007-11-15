@@ -16,7 +16,7 @@ xT.Info = {
 	cssLoaded : '',
 	loadingMsg : 'Nahrávám...',
 	BeforeSendData : function (d) { return d },
-	ProceedData : function(r, d, dv, x) { dv.innerHTML = x.responseText; return true },
+	ProceedData : function(r, d, dv, x) { dv.innerHTML = x; return true },
 	version : '$Revision$',
 
 	init : function(elementName, customData) { with(this) {

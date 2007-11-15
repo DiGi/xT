@@ -58,7 +58,7 @@ xT.Tree = {
 		if (!$('tree-' + d._id)) {
 			var elm = $('show-' + d._id)
 			elm.className = elm.className.replace('plus', 'minus')
-			elm.innerHTML += x.responseText
+			elm.innerHTML += x
 			var tree = xT.Lib.firstChildByTag(elm, 'UL')
 			xT.Tree._prepareUL(tree, this.expandElements)
 		}

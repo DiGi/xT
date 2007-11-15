@@ -60,20 +60,12 @@ var xT = {
 	* @return {object} Získaný XMLHttpRequest nebo false
 	**/
 	getXmlReq : function() {
-		if (window.XMLHttpRequest)
-			try {
-				return new XMLHttpRequest() }
-			catch(e) {
-				return false }
-		else if (window.ActiveXObject)
-			try {
-				return new ActiveXObject("Msxml2.XMLHTTP") }
-			catch(e) {
-				try {
-					return new ActiveXObject("Microsoft.XMLHTTP") }
-				catch(e) {
-					return false} }
-		else
+		if (window.XMLHttpRequest) 
+			return new XMLHttpRequest()
+		else 
+			if (window.ActiveXObject) 
+				try { return new ActiveXObject("Msxml2.XMLHTTP") } catch (e) {
+				try { return new ActiveXObject("Microsoft.XMLHTTP") } catch(e) {} } 
 		return false
 	},
 
@@ -99,7 +91,7 @@ var xT = {
 	* @param {Object} x Vrácený XML objekt
 	**/
 	evalResponse : function (d,x) {
-		return this._evalJS(x.responseText);
+		return xT._evalJS(x.responseText);
 	},
 
 	
@@ -127,20 +119,25 @@ var xT = {
 	* Událost volaná z XMLHttpRequest objektu, zpracování informací o prùbìhu stahování
 	*
 	**/
-	_proceed : function(dataObj) { with(this) {
-		var x = dataObj.xmlReq
-		if (x.readyState == 4) {
+	_proceed : function(dataObj) {
+		if (dataObj.xmlReq.readyState == 4) with(this) {
 			_complete()
-			if (x.status < 400)
-				if (x.getResponseHeader('Content-Type').match(/^\s*(text|application)\/(javascript|js$|js;|eval)(.*)?\s*$/i))
+			var x = dataObj.xmlReq
+			if (x.status < 400) {
+				var data = x.getResponseHeader('Content-Type');
+				if (data.match(/^\s*(text|application)\/(javascript|js$|js;|eval)(.*)?\s*$/i))
 					_evalJS(x.responseText)
 				else {
-					x.responseJSON = x.getResponseHeader('Content-Type').match(/^\s*(text|data|application)\/json(.*)?\s*$/i) ? _evalJS('(' + x.responseText + ')') : '';
-					try { dataObj.OnComplete(dataObj.data, x) } catch(e) { _error(e, 'Error in OnComplete event') } }
-			else
+					if (data.match(/^.*\/xml.*$/i))
+						data = x.responseXML
+					else
+						data = data.match(/^\s*(text|data|application)\/json(.*)?\s*$/i) ? _evalJS('(' + x.responseText + ')') : x.responseText;
+					try { dataObj.OnComplete(dataObj.data, data) } catch(e) { _error(e, 'Error in OnComplete event') }
+				}
+			} else
 				_error("Problem pri prenaseni dat:\nChyba " + x.status + ': ' + x.statusText)
 		}
-	}},
+	},
 
 
 	/**
@@ -160,13 +157,13 @@ var xT = {
 	* Správa pøenosù - zaène nový pøenos (i více pokud jsou volné sloty) a posílá upozornìní
 	*
 	**/
-	_do_next : function() { with(this) {
-		if (_active < maxActive && _jobs.length > 0) {
-			if (_active == 0)
-				try { OnStartTransfers() } catch(e) { _error(e, 'Error in OnStartTransfers event') }
-			_active++; _start_transfer(); _do_next()
+	_do_next : function() {
+		if (this._active < this.maxActive && this._jobs.length > 0) {
+			if (this._active == 0)
+				try { this.OnStartTransfers() } catch(e) { xT_error(e, 'Error in OnStartTransfers event') }
+			this._active++; this._start_transfer(); this._do_next()
 		}
-	}},
+	},
 
 
 	/**
@@ -186,19 +183,18 @@ var xT = {
 	* Zaène provádìt jeden XMLHttp pøenos ze seznamu úkolù
 	* 
 	**/
-	_start_transfer : function() { with(this) {
-		var c = _jobs.shift(), x = c.xmlReq = getXmlReq()
+	_start_transfer : function() {
+		var c = this._jobs.shift(), x = c.xmlReq = this.getXmlReq()
 		// Pøíprava pøedávaných dat
-		var d = c.data instanceof Object || c.data instanceof Array ? dataToURI(c.data) : 'data=' + c.data
+		var d = c.data instanceof Object || c.data instanceof Array ? this.dataToURI(c.data) : 'data=' + c.data
 		var u = c.method == 'GET' ? c.url + '?' + d : c.url
+		// Obsluha událostí
+		x.onreadystatechange = function() { xT._proceed(c) }
+		// Samotné otevøení dotazu, odeslání hlavièek
+		var m = c.method.match(/(GET|POST)/), m = m ? m[0] : 'GET'
 		try {
-			// Obsluha událostí
-			x.onreadystatechange = function() { xT._proceed(c) }
-			// Samotné otevøení dotazu, odeslání hlavièek
-			var m = c.method.match(/(GET|POST)/), m = m ? m[0] : 'GET'
 			x.open(m, u, true)
-			x.setRequestHeader('X-Requested-With','xT v' + version)
-			x.setRequestHeader('Accept', 'text/html, application/xml, text/xml, */*')
+			x.setRequestHeader('Accept', 'text/html, application/json, text/xml, */*')
 			if (m == 'POST') {
 				x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 				x.setRequestHeader('Content-Length', d.length)
@@ -207,10 +203,10 @@ var xT = {
 			else
 				x.send(null)
 			// Timeout
-			setTimeout(function() { xT._on_timeout(c) }, timeout * 1000)
-		} catch (e) {_error(e, 'Nepodarilo se navazat spojeni k '+c.url); _complete()}
+			setTimeout(function() { xT._on_timeout(c) }, this.timeout * 1000)
+		} catch (e) { xT._error(e, 'Nepodarilo se navazat spojeni k '+c.url); this._complete() }
 		return true
-	}},
+	},
 
 
 	/**
@@ -225,7 +221,7 @@ var xT = {
 } // xT
 
 // detekce XML objektu
-xT.enabled = xT.getXmlReq() != false
+xT.enabled = xT.getXmlReq() !== false;
 
 xT.Lib = {
 	/**
@@ -233,12 +229,12 @@ xT.Lib = {
 	* @access public
 	**/
 	childsByTag : function(element, tagName) {
-		var o = [], s = element.childNodes, tag = tagName.toUpperCase()
+		var o = [], s = element.childNodes, tag = tagName.toUpperCase();
 		if (s)
 			for(var k = 0; k < s.length; k++)
 				if (s[k].tagName && s[k].tagName == tag)
-					o.push(s[k])
-		return o
+					o.push(s[k]);
+		return o;
 	},
 
 	/**
@@ -246,12 +242,12 @@ xT.Lib = {
 	* @access public
 	**/
 	firstChildByTag : function(element, tagName) {
-		var s = element.childNodes, tag = tagName.toUpperCase()
+		var s = element.childNodes, tag = tagName.toUpperCase();
 		if (s)
 			for(var k = 0; k < s.length; k++)
 				if (s[k].tagName && s[k].tagName == tag )
-					return s[k]
-		return null
+					return s[k];
+		return null;
 	}
 
 } // xT.Lib
