@@ -91,7 +91,7 @@ var xT = {
 	* @param {Object} x Vrácený XML objekt
 	**/
 	evalResponse : function (d,x) {
-		return xT._evalJS(x.responseText);
+		return xT._evalJS(x);
 	},
 
 	
@@ -123,7 +123,7 @@ var xT = {
 		if (dataObj.xmlReq.readyState == 4) with(this) {
 			_complete()
 			var x = dataObj.xmlReq
-			if (x.status < 400) {
+			if (x && x.status < 400) {
 				var data = x.getResponseHeader('Content-Type');
 				if (data.match(/^\s*(text|application)\/(javascript|js$|js;|eval)(.*)?\s*$/i))
 					_evalJS(x.responseText)
