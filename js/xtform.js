@@ -18,7 +18,13 @@ xT.Form = {
 	* @access public
 	**/
 	send : function(url, formName, OnComplete) { with(this) {
-		xT.request(method, url, BeforeSendData(formToObject(formName)), OnComplete || OnTransferComplete)
+		var out = [], elems = getFormElements(formName)
+		for (var i in elems) {
+			var v = xT.Form.Items[elems[i].tagName.toLowerCase()](elems[i])
+			if (v && v[0])
+				out.push(v[0] + '=' + encodeURIComponent(v[1]))
+		}		
+		xT.request(method, url, BeforeSendData(out).join('&'), OnComplete || OnTransferComplete)
 	}},
 
 

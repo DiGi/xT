@@ -186,7 +186,7 @@ var xT = {
 	_start_transfer : function() {
 		var c = this._jobs.shift(), x = c.xmlReq = this.getXmlReq()
 		// Pøíprava pøedávaných dat
-		var d = c.data instanceof Object || c.data instanceof Array ? this.dataToURI(c.data) : 'data=' + c.data
+		var d = c.data instanceof Object || c.data instanceof Array ? this.dataToURI(c.data) : c.data.indexOf && c.data.indexOf('=') > 0 ? c.data : 'data=' + c.data
 		var u = c.method == 'GET' ? c.url + '?' + d : c.url
 		// Obsluha událostí
 		x.onreadystatechange = function() { xT._proceed(c) }
