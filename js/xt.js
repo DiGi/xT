@@ -46,7 +46,12 @@ var xT = {
 	**/
 	request : function(method, url, data, OnCompleteEvent) { with(this) {
 		if (enabled) {
-			_jobs.push({ method: method.toUpperCase(), url: url, data: data, OnComplete: OnCompleteEvent || evalResponse, xmlReq: null })
+			_jobs.push({
+				method: method.toUpperCase(),
+				url: url,
+				data: data == undefined ? '' : data,
+				OnComplete: OnCompleteEvent || evalResponse,
+				xmlReq: null })
 			_do_next()
 		} else
 			_error('XMLHttpRequest is missing.')
@@ -88,7 +93,7 @@ var xT = {
 	* Obsluha JS kódu
 	*
 	* @param {Object} d Pùvodní odeslaná data
-	* @param {Object} x Vrácený XML objekt
+	* @param {Object} x Vrácená data (XML, JSON objekt, èistý text)
 	**/
 	evalResponse : function (d,x) {
 		return xT._evalJS(x);
