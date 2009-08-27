@@ -1,5 +1,6 @@
 xT Readme
 ---------
+Zkouším pøechod na Git. Je to takové divné...
 
 xT (xt.js)
 ----------
