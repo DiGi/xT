@@ -5,7 +5,6 @@
 * part of SION
 *
 * @author DiGi
-* $Id$
 **/
 
 

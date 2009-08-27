@@ -4,7 +4,6 @@
 *
 * @author DiGi
 * @see xT
-* $Id$
 **/
 
 xT.Form = {

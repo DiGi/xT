@@ -1,7 +1,5 @@
 xT Readme
 ---------
-$URL$
-$Id$
 
 xT (xt.js)
 ----------
