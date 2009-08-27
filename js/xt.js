@@ -4,6 +4,8 @@
 * xT.Eval object
 * part of SION
 *
+* @todo Pøeložit komentáøe a chybové hlášky
+*
 * @author DiGi
 **/
 
