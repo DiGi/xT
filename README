@@ -1,0 +1,133 @@
+xT Readme
+---------
+
+xT (xt.js)
+----------
+Zapouzdření XMLHttpRequest objektu
+
+v0.96 (2006.12.02)
+- veřejná verze
+
+v0.95 (2006.11.16)
+- xT.Eval odebráno, přidána přímá podpora do xT.request (při volání bez obslužné události budou přijatá data evalována)
+  a možnost vynutit evalovaní nastavením content-type na text|application/javascript|js|eval
+
+v0.95.b1 (2006.11.06)
+- přejmenování metod - sjednocení velikostí písmen v názvech proměnných a metod
+
+v0.93.1 (2006.10.26)
+- drobná oprava - doplněno return false - ve funkci getXmlReq (hlášeno jako varování ve strict módu)
+
+v0.93 (2006.07.25)
+- drobné opravy (var parametry) - hlášeno jako varování ve strict módech
+
+v0.92 (2006.06.09)
+! oprava v xT._start_transfer (odstraněno posílání headeru "Connection:Close". V případě GET požadavku se pošle x.send(null) )
+
+v0.91 (2006.06.09)
+! oprava v xT._on_timeout (u abort doplněné () )
+
+v0.9 (2006.05.31)
+- spojení jednotlivých tříd do základní třídy xT
+- xT.requesetEval přesunuta do vlastní třídy xT.Eval
+! opravy v xT.Lib (chyba při nenalezení žádných potomků)
+
+v0.85 (2006.05.30)
+- přepracované hlášení chyb, xT._error podporuje i chybový objekt
+! Oprava chyby this._error v xT._evalJS
+
+v0.82 (2006.05.??)
+- drobné úpravy kódu, doplněný komentář
+- drobné změny v xTLib
+
+v0.8 (2006.05.19)
+- Nový objekt XTLib se společnými funkcemi
+
+v0.7 (2006.05.09)
+- Nová metoda requestEval, vrácená data rovnou provádí jako JS kód
+
+v0.6 (2006.05.06)
+- Fronta dotazů
+- POST/GET dotazy
+- Libovolný počet souběžně běžících dotazů (postupně načítaných z fronty)
+- Eventy při začátku přenosu a dokončení všech přenosů
+- Event při chybě (interní chyby, volání externích eventů (bezpečnostní optimalizace))
+- Event při Timeoutu (délka timeoutu měnitelná)
+- Automatické enkódování předaných dat (řetězec, array nebo objekt) pro odeslání
+
+TODO:
+- Volitelné/měnitelné Headery?
+
+xT.Lib
+Obsahuje společné metody používané dalšími objekty (childsByTag, firstChildByTag)
+
+xT.Tree (xttree.js)
+-------------------
+Aktivní zobrazení stromu s možností dynamického dotahování pomocí xT
+
+v0.96 public (2006.12.02)
+- Malá oprava pro dojo compressor
+
+v0.96 (2006.11.21)
+- vlastnost xTAutoInitRootSubItems přesunuto do parametru xT.Tree.init() jako [autoExpandElements = true]
+- vlastnost xTAutoInitxTSubItems přejmenována na expandElements
+- nová událost GetDataURL(id) - pro získávání statických URL
+
+v0.95 (2006.11.06)
+- použití funkce $
+
+v0.93 (2006.07.25)
+- drobné opravy (var parametry) - hlášeno jako varování ve strict módech
+
+v0.9 (2006.05.31)
+- spojení jednotlivých tříd do základní třídy xT
+
+v0.82 (2006.05.??)
+- drobné úpravy kódu
+
+v0.8 (2006.05.19)
+- Použití xTLib místo _getChildNodes
+
+v0.7 (2006.05.09)
+- Oprava zjištění potomků, getElementsByTagName nahrazeno vlastním _getChildNodes
+
+v0.6 (2006.05.06)
+- Struktura podle UL/LI
+- při označování dat ("generování stromu" možno určit, jestli se mají procházet jen základní úrovně nebo
+  i vnořené (pro základní strom a xT strukturu zvlášť) (rychlostní optimalizace)
+- LI se stylem "minus" jsou vždy kresleny rozbalené
+- Data jsou dotahována přes xT objekt
+- Automatická detekce poslední položky stromu
+- Událost BeforeSendData pro volitelné doplnění libovolných dat do xT dotazů
+
+
+xT.Info (xtinfo.js)
+-------------------
+Infoblok s dotahováním přes xT
+
+v0.95 (2006.11.07)
+- doplněn druhý parametr v metodě init - obsahuje volitelná uživatelská data, která se pak předávají přes xT
+- použití funkce $
+
+v0.9 (2006.05.31)
+- spojení jednotlivých tříd do základní třídy xT
+
+v0.12 (2006.05.??)
+- sync na 0.?2
+
+v0.1 (2006.05.19 - beta)
+
+xT.Form (xtinfo.js)
+-------------------
+Obsluha Formů s možností odeslat data přes xT
+
+v0.95 (2006.11.06)
+- nepojmenované elementy se neodesílají
+- použití funkce $
+
+v0.9 (2006.05.31)
+- spojení jednotlivých tříd do základní třídy xT
+- událost BeforeSendData
+
+v0.12 (2006.05.??)
+- init verze
