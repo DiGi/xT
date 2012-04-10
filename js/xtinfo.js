@@ -13,7 +13,7 @@ xT.Info = {
 	cssMinus : 'm',
 	cssLoading : 'load',
 	cssLoaded : '',
-	loadingMsg : 'Nahr·v·m...',
+	loadingMsg : 'Nahr√°v√°m...',
 	BeforeSendData : function (d) { return d },
 	ProceedData : function(r, d, dv, x) { dv.innerHTML = x; return true },
 	version : '$Revision$',

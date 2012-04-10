@@ -7,18 +7,18 @@
 **/
 
 xT.Tree = {
-	method : 'POST', // POST, GET, pøi pouitém OnGetDataURL i EMPTY-GET
+	method : 'POST', // POST, GET, pÅ™i pouÅ¾itÃ©m OnGetDataURL i EMPTY-GET
 	expandElements : false,
-	BeforeSendData : function (d) { return d }, // Událost volaná pøed zaèátkem pøenosu. V ní je moné do objektu doplnit další parametry pøedané volané stránce
-	OnGetDataURL : null, // Funkce, volaná pøi získání "dataURL" - pouívané pro statické GET stránky. Pøíklad: xT.Tree.OnGetDataURL = function(id) { return 'treecache/' + id + '.html' }
+	BeforeSendData : function (d) { return d }, // UdÃ¡lost volanÃ¡ pÅ™ed zaÄÃ¡tkem pÅ™enosu. V nÃ­ je moÅ¾nÃ© do objektu doplnit dalÅ¡Ã­ parametry pÅ™edanÃ© volanÃ© strÃ¡nce
+	OnGetDataURL : null, // Funkce, volanÃ¡ pÅ™i zÃ­skÃ¡nÃ­ "dataURL" - pouÅ¾Ã­vanÃ© pro statickÃ© GET strÃ¡nky. PÅ™Ã­klad: xT.Tree.OnGetDataURL = function(id) { return 'treecache/' + id + '.html' }
 	version : '$Revision$',
 
 	/**
-	* Init stromu, nastavení události a volání _prepareUL (nastavení [+] [-] ikon)
+	* Init stromu, nastavenÃ­ udÃ¡losti a volÃ¡nÃ­ _prepareUL (nastavenÃ­ [+] [-] ikon)
 	* @access public
-	* @param string rootElement jméno hlavního <ul>
-	* @param string url URL, které se má øíkat o data
-	* @param boolean autoExpandElements automaticky rozbalit všechny naplnìné elementy
+	* @param string rootElement jmÃ©no hlavnÃ­ho <ul>
+	* @param string url URL, kterÃ© se mÃ¡ Å™Ã­kat o data
+	* @param boolean autoExpandElements automaticky rozbalit vÅ¡echny naplnÄ›nÃ© elementy
 	**/
 	init : function(rootElement, url, autoExpandElements) { with(this) {
 		var t = typeof rootElement == 'string' ? $(rootElement) : rootElement
@@ -29,7 +29,7 @@ xT.Tree = {
 	}},
 
 	/**
-	* Obsluha kliknutí stromu - rozbalení, sbalení nebo dotaení elementu
+	* Obsluha kliknutÃ­ stromu - rozbalenÃ­, sbalenÃ­ nebo dotaÅ¾enÃ­ elementu
 	* @access protected
 	**/
 	_click : function(e, url) { with(this) {
@@ -50,7 +50,7 @@ xT.Tree = {
 	}},
 
 	/**
-	* Událost, obsluhující dokonèení dotaení dat (pokud ji v dokumentu neexistuje poloka se stejnım jménem
+	* UdÃ¡lost, obsluhujÃ­cÃ­ dokonÄenÃ­ dotaÅ¾enÃ­ dat (pokud jiÅ¾ v dokumentu neexistuje poloÅ¾ka se stejnÃ½m jmÃ©nem
 	* @access protected
 	**/
 	_loaded : function(d,x) {
@@ -64,7 +64,7 @@ xT.Tree = {
 	},
 
 	/**
-	* Metoda, nastavující korektní [+] [-] znaèky jednotlivım <li> elementùm
+	* Metoda, nastavujÃ­cÃ­ korektnÃ­ [+] [-] znaÄky jednotlivÃ½m <li> elementÅ¯m
 	* @access private
 	**/
 	_prepareUL : function(ul, prepareSub) {

@@ -13,7 +13,7 @@ xT.Form = {
 	version : '$Revision$',
 
 	/**
-	* Odešle pøes xT data na zadanou adresu
+	* OdeÅ¡le pÅ™es xT data na zadanou adresu
 	* @access public
 	**/
 	send : function(url, formName, OnComplete) { with(this) {
@@ -28,7 +28,7 @@ xT.Form = {
 
 
 	/**
-	* Odešle pøes xT data na zadanou adresu, vrácená data provede
+	* OdeÅ¡le pÅ™es xT data na zadanou adresu, vrÃ¡cenÃ¡ data provede
 	* @access public
 	**/
 	sendAndEval : function(url, formName) { with(this) {
@@ -37,7 +37,7 @@ xT.Form = {
 
 
 	/**
-	* Vrátí obsah formuláøe jako datovı objekt
+	* VrÃ¡tÃ­ obsah formulÃ¡Å™e jako datovÃ½ objekt
 	* @access public
 	**/
 	formToObject : function (formName) { with(this) {
@@ -53,7 +53,7 @@ xT.Form = {
 
 
 	/**
-	* Vrátí seznam pouitelnıch Elementù ve formu
+	* VrÃ¡tÃ­ seznam pouÅ¾itelnÃ½ch ElementÅ¯ ve formu
 	* @access public
 	**/
 	getFormElements : function(formName) {
@@ -70,7 +70,7 @@ xT.Form = {
 
 
 	/**
-	* Zakáe Elementy na formuláøi, volitelnì s CallBack funkcí
+	* ZakÃ¡Å¾e Elementy na formulÃ¡Å™i, volitelnÄ› s CallBack funkcÃ­
 	* @aceess public
 	**/
 	disable : function(formName, CheckElem) { with (this){
@@ -86,7 +86,7 @@ xT.Form = {
 
 
 	/**
-	* Povolí Elementy na formuláøi, volitelnì s CallBack funkcí
+	* PovolÃ­ Elementy na formulÃ¡Å™i, volitelnÄ› s CallBack funkcÃ­
 	* @aceess public
 	**/
 	enable : function(formName, CheckElem) { with (this){
@@ -99,8 +99,8 @@ xT.Form = {
 
 
 	/**
-	* Pomocnı objekt - obsahuje seznam pouitıch elementù a zpùsob,
-	* jak z nich naèíst data
+	* PomocnÃ½ objekt - obsahuje seznam pouÅ¾itÃ½ch elementÅ¯ a zpÅ¯sob,
+	* jak z nich naÄÃ­st data
 	**/
 	Items : {
 		// <input type="..."

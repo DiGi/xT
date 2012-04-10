@@ -4,14 +4,14 @@
 * xT.Eval object
 * part of SION
 *
-* @todo Pøeloit komentáøe a chybové hlášky
+* @todo PÅ™eloÅ¾it komentÃ¡Å™e a chybovÃ© hlÃ¡Å¡ky
 *
 * @author DiGi
 **/
 
 
 /**
-* Zkratka na získávání elementu podle ID
+* Zkratka na zÃ­skÃ¡vÃ¡nÃ­ elementu podle ID
 *
 **/
 function $(id) {
@@ -19,17 +19,17 @@ function $(id) {
 
 
 /**
-* Hlavní objekt
+* HlavnÃ­ objekt
 *
 **/
 var xT = {
-	enabled : false,  // XMLHttpRequest je podporován prohlíeèem
-	maxActive : 4,    // Maximální poèet soubìnıch dotazù
+	enabled : false,  // XMLHttpRequest je podporovÃ¡n prohlÃ­Å¾eÄem
+	maxActive : 4,    // MaximÃ¡lnÃ­ poÄet soubÄ›Å¾nÃ½ch dotazÅ¯
 	timeout : 8,      // Timeout dotazu (sec)
-	OnStartTransfers : function() {},       // Událost volaná pøi zaèátku pøenosu
-	OnTransfersComplete : function() {},    // Událost volaná pøi dokonèení všech pøenosù
+	OnStartTransfers : function() {},       // UdÃ¡lost volanÃ¡ pÅ™i zaÄÃ¡tku pÅ™enosu
+	OnTransfersComplete : function() {},    // UdÃ¡lost volanÃ¡ pÅ™i dokonÄenÃ­ vÅ¡ech pÅ™enosÅ¯
 	OnError : function(msg) { alert(msg); }, // Obsluha chyb
-	OnTimeout : function(url, data) { xT._error('Chyba : Timeout pri komunikaci'); }, // Událost volaná pøi timeoutu dotazu
+	OnTimeout : function(url, data) { xT._error('Chyba : Timeout pri komunikaci'); }, // UdÃ¡lost volanÃ¡ pÅ™i timeoutu dotazu
 	version : '$Revision$',
 	// @access private
 	_active : 0,
@@ -37,13 +37,13 @@ var xT = {
 
 
 	/**
-	* Hlavní metoda pøidávající úkoly do fronty a spouštìní stahování
+	* HlavnÃ­ metoda pÅ™idÃ¡vajÃ­cÃ­ Ãºkoly do fronty a spouÅ¡tÄ›nÃ­ stahovÃ¡nÃ­
 	* 
-	* @param {string} method Zpùsob odeslání poadavku (POST, GET, ...)
+	* @param {string} method ZpÅ¯sob odeslÃ¡nÃ­ poÅ¾adavku (POST, GET, ...)
 	* @param {string} url Adresa
 	* @param {Object} data
 	* @param {event} OnCompleteEvent
-	* @retun {boolean} Poadavek byl úspìšnì pøidán do fronty ke zpracování
+	* @retun {boolean} PoÅ¾adavek byl ÃºspÄ›Å¡nÄ› pÅ™idÃ¡n do fronty ke zpracovÃ¡nÃ­
 	**/
 	request : function(method, url, data, OnCompleteEvent) { with(this) {
 		if (enabled) {
@@ -61,9 +61,9 @@ var xT = {
 
 
 	/**
-	* Získání XMLHttpRequest objektu
+	* ZÃ­skÃ¡nÃ­ XMLHttpRequest objektu
 	* 
-	* @return {object} Získanı XMLHttpRequest nebo false
+	* @return {object} ZÃ­skanÃ½ XMLHttpRequest nebo false
 	**/
 	getXmlReq : function() {
 		if (window.XMLHttpRequest) 
@@ -77,10 +77,10 @@ var xT = {
 
 
 	/**
-	* Konverze dat (object nebo array) na klic=hodnota&klic2=hodnota2... formát. Pouze jedna úroveò.
+	* Konverze dat (object nebo array) na klic=hodnota&klic2=hodnota2... formÃ¡t. Pouze jedna ÃºroveÅˆ.
 	*
-	* @param {Object} data Data k pøevedení
-	* @return {string} Zakódované data
+	* @param {Object} data Data k pÅ™evedenÃ­
+	* @return {string} ZakÃ³dovanÃ© data
 	**/
 	dataToURI : function(data) {
 		var out = []
@@ -91,10 +91,10 @@ var xT = {
 
 
 	/**
-	* Obsluha JS kódu
+	* Obsluha JS kÃ³du
 	*
-	* @param {Object} d Pùvodní odeslaná data
-	* @param {Object} x Vrácená data (XML, JSON objekt, èistı text)
+	* @param {Object} d PÅ¯vodnÃ­ odeslanÃ¡ data
+	* @param {Object} x VrÃ¡cenÃ¡ data (XML, JSON objekt, ÄistÃ½ text)
 	**/
 	evalResponse : function (d,x) {
 		return xT._evalJS(x);
@@ -102,10 +102,10 @@ var xT = {
 
 	
 	/**
-	* Bezpeèné provádìní JS kódu
+	* BezpeÄnÃ© provÃ¡dÄ›nÃ­ JS kÃ³du
 	* 
-	* @param {string} js JavaScript kód k provedení
-	* @return Vrácenı vısledek z JS kódu
+	* @param {string} js JavaScript kÃ³d k provedenÃ­
+	* @return VrÃ¡cenÃ½ vÃ½sledek z JS kÃ³du
 	**/
 	_evalJS : function(js) {
 		try { return eval(js) } catch(e) { xT._error(e, 'Error in requested JavaScript code') }
@@ -113,7 +113,7 @@ var xT = {
 
 
 	/**
-	* Textové zobrazení stavu objektu
+	* TextovÃ© zobrazenÃ­ stavu objektu
 	*
 	**/
 	toString : function() { with(this) {
@@ -122,7 +122,7 @@ var xT = {
 
 
 	/**
-	* Událost volaná z XMLHttpRequest objektu, zpracování informací o prùbìhu stahování
+	* UdÃ¡lost volanÃ¡ z XMLHttpRequest objektu, zpracovÃ¡nÃ­ informacÃ­ o prÅ¯bÄ›hu stahovÃ¡nÃ­
 	*
 	**/
 	_proceed : function(dataObj) {
@@ -147,7 +147,7 @@ var xT = {
 
 
 	/**
-	* Obsluha timeout události
+	* Obsluha timeout udÃ¡losti
 	*
 	**/
 	_on_timeout : function(dataObj) { with(this) {
@@ -160,7 +160,7 @@ var xT = {
 
 
 	/**
-	* Správa pøenosù - zaène novı pøenos (i více pokud jsou volné sloty) a posílá upozornìní
+	* SprÃ¡va pÅ™enosÅ¯ - zaÄne novÃ½ pÅ™enos (i vÃ­ce pokud jsou volnÃ© sloty) a posÃ­lÃ¡ upozornÄ›nÃ­
 	*
 	**/
 	_do_next : function() {
@@ -173,7 +173,7 @@ var xT = {
 
 
 	/**
-	* Obsluha "dokonèení pøenosu". Zaèít další pøenos nebo poslat upozornìní pøi dokonèení všech
+	* Obsluha "dokonÄenÃ­ pÅ™enosu". ZaÄÃ­t dalÅ¡Ã­ pÅ™enos nebo poslat upozornÄ›nÃ­ pÅ™i dokonÄenÃ­ vÅ¡ech
 	* 
 	**/
 	_complete : function() { with(this) {
@@ -186,17 +186,17 @@ var xT = {
 
 
 	/**
-	* Zaène provádìt jeden XMLHttp pøenos ze seznamu úkolù
+	* ZaÄne provÃ¡dÄ›t jeden XMLHttp pÅ™enos ze seznamu ÃºkolÅ¯
 	* 
 	**/
 	_start_transfer : function() {
 		var c = this._jobs.shift(), x = c.xmlReq = this.getXmlReq()
-		// Pøíprava pøedávanıch dat
+		// PÅ™Ã­prava pÅ™edÃ¡vanÃ½ch dat
 		var d = c.data instanceof Object || c.data instanceof Array ? this.dataToURI(c.data) : c.data.indexOf && c.data.indexOf('=') > 0 ? c.data : 'data=' + c.data
 		var u = c.method == 'GET' ? c.url + '?' + d : c.url
-		// Obsluha událostí
+		// Obsluha udÃ¡lostÃ­
 		x.onreadystatechange = function() { xT._proceed(c) }
-		// Samotné otevøení dotazu, odeslání hlavièek
+		// SamotnÃ© otevÅ™enÃ­ dotazu, odeslÃ¡nÃ­ hlaviÄek
 		var m = c.method.match(/(GET|POST)/), m = m ? m[0] : 'GET'
 		try {
 			x.open(m, u, true)
@@ -204,7 +204,7 @@ var xT = {
 			if (m == 'POST') {
 				x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
 				x.setRequestHeader('Content-Length', d.length)
-				// Odeslání POST obsahu
+				// OdeslÃ¡nÃ­ POST obsahu
 				x.send(d) }
 			else
 				x.send(null)
@@ -216,7 +216,7 @@ var xT = {
 
 
 	/**
-	* Metoda na volání obsluhy chyb
+	* Metoda na volÃ¡nÃ­ obsluhy chyb
 	* 
 	**/
 	_error : function(exception, message) {
@@ -231,7 +231,7 @@ xT.enabled = xT.getXmlReq() !== false;
 
 xT.Lib = {
 	/**
-	* Vrátí seznam skuteènıch potomkù podle jejich typu
+	* VrÃ¡tÃ­ seznam skuteÄnÃ½ch potomkÅ¯ podle jejich typu
 	* @access public
 	**/
 	childsByTag : function(element, tagName) {
@@ -244,7 +244,7 @@ xT.Lib = {
 	},
 
 	/**
-	* Vrátí prvního nalezeného potomka podle typu
+	* VrÃ¡tÃ­ prvnÃ­ho nalezenÃ©ho potomka podle typu
 	* @access public
 	**/
 	firstChildByTag : function(element, tagName) {
