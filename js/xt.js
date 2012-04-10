@@ -45,19 +45,19 @@ var xT = {
 	* @param {event} OnCompleteEvent
 	* @retun {boolean} Požadavek byl úspěšně přidán do fronty ke zpracování
 	**/
-	request : function(method, url, data, OnCompleteEvent) { with(this) {
-		if (enabled) {
-			_jobs.push({
+	request : function(method, url, data, OnCompleteEvent) {
+		if (this.enabled) {
+			this._jobs.push({
 				method: method.toUpperCase(),
 				url: url,
-				data: data == undefined ? '' : data,
-				OnComplete: OnCompleteEvent || evalResponse,
-				xmlReq: null })
-			_do_next()
+				data: data === undefined ? '' : data,
+				OnComplete: OnCompleteEvent || this.evalResponse,
+				xmlReq: null });
+			this._do_next();
 		} else
-			_error('XMLHttpRequest is missing.')
-		return enabled
-	}},
+			this._error('XMLHttpRequest is missing.');
+		return this.enabled;
+	},
 
 
 	/**
@@ -67,12 +67,12 @@ var xT = {
 	**/
 	getXmlReq : function() {
 		if (window.XMLHttpRequest) 
-			return new XMLHttpRequest()
+			return new XMLHttpRequest();
 		else 
 			if (window.ActiveXObject) 
-				try { return new ActiveXObject("Msxml2.XMLHTTP") } catch (e) {
-				try { return new ActiveXObject("Microsoft.XMLHTTP") } catch(e) {} } 
-		return false
+				try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e) {
+				try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch(e) {} } 
+		return false;
 	},
 
 
@@ -83,10 +83,10 @@ var xT = {
 	* @return {string} Zakódované data
 	**/
 	dataToURI : function(data) {
-		var out = []
+		var out = [];
 		for (var key in data)
-			out.push(key + '=' + encodeURIComponent(data[key]))
-		return out.join('&')
+			out.push(key + '=' + encodeURIComponent(data[key]));
+		return out.join('&');
 	},
 
 
@@ -108,7 +108,7 @@ var xT = {
 	* @return Vrácený výsledek z JS kódu
 	**/
 	_evalJS : function(js) {
-		try { return eval(js) } catch(e) { xT._error(e, 'Error in requested JavaScript code') }
+		try { return eval(js); } catch(e) { xT._error(e, 'Error in requested JavaScript code'); }
 	},
 
 
@@ -116,9 +116,9 @@ var xT = {
 	* Textové zobrazení stavu objektu
 	*
 	**/
-	toString : function() { with(this) {
-		return 'xT v' + version + ', ' + _active + ' active jobs, '  + _jobs.length + ' in queue'
-	}},
+	toString : function() {
+		return 'xT v' + this.version + ', ' + this._active + ' active jobs, '  + this._jobs.length + ' in queue';
+	},
 
 
 	/**
@@ -126,22 +126,23 @@ var xT = {
 	*
 	**/
 	_proceed : function(dataObj) {
-		if (dataObj.xmlReq.readyState == 4) with(this) {
-			_complete()
-			var x = dataObj.xmlReq
+		if (dataObj.xmlReq.readyState == 4)
+        {
+			this._complete();
+			var x = dataObj.xmlReq;
 			if (x && x.status < 400) {
 				var data = x.getResponseHeader('Content-Type');
 				if (data.match(/^\s*(text|application)\/(javascript|js$|js;|eval)(.*)?\s*$/i))
-					_evalJS(x.responseText)
+					this._evalJS(x.responseText);
 				else {
 					if (data.match(/^.*\/xml.*$/i))
-						data = x.responseXML
+						data = x.responseXML;
 					else
-						data = data.match(/^\s*(text|data|application)\/json(.*)?\s*$/i) ? _evalJS('(' + x.responseText + ')') : x.responseText;
-					try { dataObj.OnComplete(dataObj.data, data) } catch(e) { _error(e, 'Error in OnComplete event') }
+						data = data.match(/^\s*(text|data|application)\/json(.*)?\s*$/i) ? this._evalJS('(' + x.responseText + ')') : x.responseText;
+					try { dataObj.OnComplete(dataObj.data, data); } catch(e) { this._error(e, 'Error in OnComplete event'); }
 				}
 			} else
-				_error("Problem pri prenaseni dat:\nChyba " + x.status + ': ' + x.statusText)
+				this._error("Problem pri prenaseni dat:\nChyba " + x.status + ': ' + x.statusText);
 		}
 	},
 
@@ -150,13 +151,13 @@ var xT = {
 	* Obsluha timeout události
 	*
 	**/
-	_on_timeout : function(dataObj) { with(this) {
+	_on_timeout : function(dataObj) {
 		if (dataObj && dataObj.xmlReq.readyState < 4) {
-			dataObj.xmlReq.abort()
-			_complete()
-			try { OnTimeout(dataObj.url, dataObj.data) } catch(e) { _error(e, 'Error in OnTimeout event') }
+			dataObj.xmlReq.abort();
+			this._complete();
+			try { this.OnTimeout(dataObj.url, dataObj.data); } catch(e) { this._error(e, 'Error in OnTimeout event'); }
 		}
-	}},
+	},
 
 
 	/**
@@ -165,9 +166,11 @@ var xT = {
 	**/
 	_do_next : function() {
 		if (this._active < this.maxActive && this._jobs.length > 0) {
-			if (this._active == 0)
-				try { this.OnStartTransfers() } catch(e) { xT_error(e, 'Error in OnStartTransfers event') }
-			this._active++; this._start_transfer(); this._do_next()
+			if (this._active === 0)
+				try { this.OnStartTransfers(); } catch(e) { this._error(e, 'Error in OnStartTransfers event'); }
+			this._active++;
+            this._start_transfer();
+            this._do_next();
 		}
 	},
 
@@ -176,13 +179,13 @@ var xT = {
 	* Obsluha "dokončení přenosu". Začít další přenos nebo poslat upozornění při dokončení všech
 	* 
 	**/
-	_complete : function() { with(this) {
-		_active--
-		if (_jobs.length > 0)
-			_do_next()
-		else if (_active == 0)
-			try { OnTransfersComplete() } catch(e) { _error(e, 'Error in OnTransfersComplete event') }
-	}},
+	_complete : function() {
+		this._active--;
+		if (this._jobs.length > 0)
+			this._do_next();
+		else if (this._active === 0)
+			try { this.OnTransfersComplete(); } catch(e) { this._error(e, 'Error in OnTransfersComplete event'); }
+	},
 
 
 	/**
@@ -190,28 +193,28 @@ var xT = {
 	* 
 	**/
 	_start_transfer : function() {
-		var c = this._jobs.shift(), x = c.xmlReq = this.getXmlReq()
+		var c = this._jobs.shift(), x = c.xmlReq = this.getXmlReq();
 		// Příprava předávaných dat
-		var d = c.data instanceof Object || c.data instanceof Array ? this.dataToURI(c.data) : c.data.indexOf && c.data.indexOf('=') > 0 ? c.data : 'data=' + c.data
-		var u = c.method == 'GET' ? c.url + '?' + d : c.url
+		var d = c.data instanceof Object || c.data instanceof Array ? this.dataToURI(c.data) : c.data.indexOf && c.data.indexOf('=') > 0 ? c.data : 'data=' + c.data;
+		var u = c.method == 'GET' ? c.url + '?' + d : c.url;
 		// Obsluha událostí
-		x.onreadystatechange = function() { xT._proceed(c) }
+		x.onreadystatechange = function() { xT._proceed(c); };
 		// Samotné otevření dotazu, odeslání hlaviček
-		var m = c.method.match(/(GET|POST)/), m = m ? m[0] : 'GET'
+		var m = c.method.match(/(GET|POST)/); m = m ? m[0] : 'GET';
 		try {
-			x.open(m, u, true)
-			x.setRequestHeader('Accept', 'text/html, application/json, text/xml, */*')
+			x.open(m, u, true);
+			x.setRequestHeader('Accept', 'text/html, application/json, text/xml, */*');
 			if (m == 'POST') {
-				x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
-				x.setRequestHeader('Content-Length', d.length)
+				x.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+				x.setRequestHeader('Content-Length', d.length);
 				// Odeslání POST obsahu
-				x.send(d) }
+				x.send(d); }
 			else
-				x.send(null)
+				x.send(null);
 			// Timeout
-			setTimeout(function() { xT._on_timeout(c) }, this.timeout * 1000)
-		} catch (e) { xT._error(e, 'Nepodarilo se navazat spojeni k '+c.url); this._complete() }
-		return true
+			setTimeout(function() { xT._on_timeout(c); }, this.timeout * 1000);
+		} catch (e) { xT._error(e, 'Nepodarilo se navazat spojeni k '+c.url); this._complete(); }
+		return true;
 	},
 
 
@@ -220,11 +223,11 @@ var xT = {
 	* 
 	**/
 	_error : function(exception, message) {
-		var msg = message == undefined ? exception : message + ':\nChyba: ' + (exception.description || exception)
-		try { this.OnError(msg) } catch(e) { alert('Error in OnError event') }
+		var msg = message === undefined ? exception : message + ':\nChyba: ' + (exception.description || exception);
+		try { this.OnError(msg); } catch(e) { alert('Error in OnError event'); }
 	}
 
-} // xT
+}; // xT
 
 // detekce XML objektu
 xT.enabled = xT.getXmlReq() !== false;
@@ -256,4 +259,4 @@ xT.Lib = {
 		return null;
 	}
 
-} // xT.Lib
+}; // xT.Lib
